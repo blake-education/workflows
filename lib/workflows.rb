@@ -1,5 +1,6 @@
 require "workflows/version"
+require "workflows/workflow"
+require "workflows/service"
 
 module Workflows
-  # Your code goes here...
 end
