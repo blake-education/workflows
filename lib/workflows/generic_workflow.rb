@@ -2,8 +2,7 @@ module Workflow
   module GenericWorkflow
     extend self
 
-    def call(*fns, failure:, success:)
-      fn = Workflows::Error.compose_with_error_handling(*fns)
+    def call(fn, failure:, success:)
       error = nil
 
       ActiveRecord::Base.transaction do
