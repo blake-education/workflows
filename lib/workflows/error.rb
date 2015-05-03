@@ -24,9 +24,9 @@ module Workflows
 
     def compose_with_error_handling(*fns)
       fns.flatten.inject do |composed, fn|
-        ->(*args) {
-          last_return = composed.call(*args)
-          if Workflows::Error.error?(last_return)
+        -> {
+          last_return = composed.call
+          if error?(last_return)
             last_return
           else
             fn.call

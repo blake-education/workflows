@@ -14,7 +14,7 @@ module Workflows
           raise ActiveRecord::Rollback
         end
 
-        return success.call(result)
+        return success.arity == 1 ? success.call(result) : success.call
       end
 
       failure.call(error.value)
