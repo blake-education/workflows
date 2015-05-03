@@ -1,6 +1,7 @@
-module Workflow
+module Workflows
   module GenericWorkflow
     extend self
+    extend Workflows::Error
 
     def call(fn, failure:, success:)
       error = nil
