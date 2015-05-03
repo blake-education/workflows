@@ -9,16 +9,16 @@ module Workflows
       ErrorValue === e
     end
 
-    def sucess?(e)
+    def success?(e)
       ! error?(e)
     end
 
     def to_error(e)
       case e
-      when ErrorVal
+      when ErrorValue
         e
       else
-        ErrorVal.new(e)
+        ErrorValue.new(e)
       end
     end
 
