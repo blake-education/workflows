@@ -50,15 +50,18 @@ module Workflows
       call compose_with_error_handling(*fns), failure: failure, success: success
     end
 
-    # `ErrorValue` denotes an error.
+    # Composes a list of functions into a single function.
     #
+    # *Note* that this isn't a general purpose composition.
+    # *Note* a function here is anything that responds to `call` i.e. lambda or a singleton module.
+    #
+    # The composed function and each constituent function have the same signature, roughly:
     # ```
-    # data ReturnValue = ErrorValue value | value
+    # fn :: void -> ReturnValue
     # ```
     #
-    # In the context of Ruby and `Workflows` this means:
-    # - a value represents an error iff it is an `ErrorValue`
-    # - otherwise the value represents success
+    # *Note* that `void` is used here to mean "takes no arguments".
+    # This is a dead giveaway that functions of this type signature will have side effects.
     #
     def compose_with_error_handling(*fns)
       fns.flatten.inject do |composed, fn|
