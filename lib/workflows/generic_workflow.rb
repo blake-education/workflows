@@ -3,6 +3,20 @@ module Workflows
     extend self
     extend Workflows::Error
 
+    # Execute `fn` within an `ActiveRecord` transaction.
+    #
+    # Rough types:
+    # ```
+    # fn :: void -> ReturnValue
+    # failure :: value -> NilClass
+    #
+    # success :: value -> NilClass
+    # # or 
+    # success :: void -> NilClass
+    # ```
+    #
+    # If `fn` returns an `ErrorValue`, roll back the transaction and call `failure` with the unwrapped error `value`.
+    # Otherwise commit the transaction and call success. 
     def call(fn, failure:, success:)
       error = nil
       result = nil
