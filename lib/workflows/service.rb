@@ -1,11 +1,7 @@
 module Workflows
   module Service
-    def success!(value=nil)
-      if value
-        value
-      else
-        true
-      end
+    def success!(value=true)
+      value
     end
 
     def failure!(value=false)
