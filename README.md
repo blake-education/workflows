@@ -1,26 +1,37 @@
 # Workflows
 
-TODO: Write a gem description
+Execute `Services` with convenient error handling.
 
-## Installation
-
-Add this line to your application's Gemfile:
+## Example
 
 ```ruby
-gem 'workflows'
+module DeleteWidgetWorkflow
+  extend self
+
+  def call(widget, failure:, success:)
+    Workflows::Workflow.call_each
+      -> { UnTwiddleWidgetService.call(widget) },
+      -> { WidgetDestructorService.call(widget) },
+      failure: failure, success: success
+  end
+end
+
+module Fooprogs < ApplicationController
+  def create
+    widget = Widget.new(params[:widget_id])
+
+    Workflows::Workflow.call -> { TwiddleWidgetService.call(widget) },
+      failure: ->(err) { render 500 },
+      success: -> { render "ok" },
+  end
+
+  def delete
+    widget = Widget.new(params[:widget_id])
+
+    DeleteWidgetWorkflow.call widget, failure: ->(err) {}, success: ->{}
+  end
+end
 ```
-
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
-
-    $ gem install workflows
-
-## Usage
-
-TODO: Write usage instructions here
 
 ## Contributing
 
