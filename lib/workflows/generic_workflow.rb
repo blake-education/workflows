@@ -5,6 +5,7 @@ module Workflows
 
     def call(fn, failure:, success:)
       error = nil
+      result = nil
 
       ActiveRecord::Base.transaction do
         result = fn.call
@@ -13,11 +14,13 @@ module Workflows
           error = result
           raise ActiveRecord::Rollback
         end
-
-        return success.arity == 1 ? success.call(result) : success.call
       end
 
-      failure.call(error.value)
+      if error
+        failure.call(error.value)
+      else
+        success.arity == 1 ? success.call(result) : success.call
+      end
     end
   end
 end
