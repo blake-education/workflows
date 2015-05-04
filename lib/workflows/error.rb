@@ -36,9 +36,10 @@ module Workflows
       end
     end
 
-    # Composes a list of functions into a single function
+    # Composes a list of functions into a single function.
     #
     # *Note* that this isn't a general purpose composition.
+    # *Note* a function here is anything that responds to `call` i.e. lambda or a singleton module.
     #
     # The composed function and each constituent function have the same signature, roughly:
     # ```
