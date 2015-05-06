@@ -82,6 +82,7 @@ describe Workflows::Workflow do
         -> { handled << :a; "first" },
         [ 
           -> { handled << :b; "array[0]" },
+          nil,
           -> { handled << :c; "array[1]" },
         ],
         -> { handled << :d; "last" }
