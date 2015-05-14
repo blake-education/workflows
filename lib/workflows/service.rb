@@ -1,11 +1,13 @@
 module Workflows
   module Service
-    def success!(msg=nil)
-      [msg || true, nil]
+    extend self
+
+    def success!(value=true)
+      value
     end
 
-    def failure!(msg)
-      [nil, msg]
+    def failure!(value=false)
+      Workflows::Error.to_error(value)
     end
   end
 end
