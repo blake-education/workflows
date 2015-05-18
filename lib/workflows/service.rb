@@ -10,6 +10,18 @@ module Workflows
       Workflows::Error.to_error(value)
     end
 
+    # `call_each` composes a list of functions into a single function
+    # which it thens calls, returning the result of the composition
+    #
+    # Each fn should have the rough type:
+    # ```
+    # fn :: void -> ReturnValue
+    # ```
+    #
+    def call_each(*fns)
+      compose_with_error_handling(fns).call
+    end
+
     # Composes a list of functions into a single function.
     #
     # *Note* that this isn't a general purpose composition.

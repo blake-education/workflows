@@ -61,4 +61,22 @@ describe Workflows::Service do
       expect(r.value).to eq("error")
     end
   end
+
+  describe '.call_each' do
+    it 'allows nesting of services' do
+      handled = []
+
+      subject.call_each(
+        -> { handled << :a },
+        -> do
+          subject.call_each(
+            -> { handled << :b_a },
+            -> { handled << :b_b },
+          )
+        end,
+        -> { handled << :c }
+      )
+      expect(handled).to eq([:a, :b_a, :b_b, :c])
+    end
+  end
 end
