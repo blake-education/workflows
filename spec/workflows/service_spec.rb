@@ -31,23 +31,6 @@ describe Workflows::Service do
       expect(r).to eq("last")
     end
 
-    it 'composes lambdas with arity > 0 ala function composition' do
-      handled = []
-
-      r = subject.compose_with_error_handling(
-        -> { handled << :a; "first" },
-        [
-          ->(input) { handled << :b; "array[0] #{input}" },
-          nil,
-          ->(input) { handled << :c; "array[1] #{input}" },
-        ],
-        ->(input) { handled << :d; "last #{input}" }
-      ).call
-
-      expect(handled).to eq([:a, :b, :c, :d])
-      expect(r).to eq("last array[1] array[0] first")
-    end
-
     it 'composes error handling' do
       handled = []
       r = subject.compose_with_error_handling(
