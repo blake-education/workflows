@@ -73,36 +73,4 @@ describe Workflows::Workflow do
       expect(messages).to eq([:failed])
     end
   end
-
-  context '.compose_with_error_handling' do
-    it 'composes lambdas' do
-      handled = []
-
-      r = subject.compose_with_error_handling(
-        -> { handled << :a; "first" },
-        [ 
-          -> { handled << :b; "array[0]" },
-          nil,
-          -> { handled << :c; "array[1]" },
-        ],
-        -> { handled << :d; "last" }
-      ).call
-
-      expect(handled).to eq([:a, :b, :c, :d])
-      expect(r).to eq("last")
-    end
-
-    it 'composes error handling' do
-      handled = []
-      r = subject.compose_with_error_handling(
-        -> { handled << :a; "first" },
-        -> { handled << :b; Workflows::ErrorValue.new("error") },
-        -> { handled << :c; "last" }
-      ).call
-
-      expect(handled).to eq([:a, :b])
-      expect(r).to be_instance_of(Workflows::ErrorValue)
-      expect(r.value).to eq("error")
-    end
-  end
 end
