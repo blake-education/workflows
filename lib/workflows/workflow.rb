@@ -70,7 +70,7 @@ module Workflows
           if Workflows::Error.error?(last_return)
             last_return
           else
-            fn.call
+            fn.arity > 0 ? fn.curry[last_return] : fn.call
           end
         }
       end
