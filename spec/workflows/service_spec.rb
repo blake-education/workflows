@@ -43,6 +43,12 @@ describe Workflows::Service do
       expect(r).to be_instance_of(Workflows::ErrorValue)
       expect(r.value).to eq("error")
     end
+
+    it 'returns a success lambda if composition flattens to nil' do
+      r = subject.compose_with_error_handling([[], [nil], nil])
+      expect(subject).to receive(:success!).and_call_original
+      expect(r.call).to eq(true)
+    end
   end
 
   describe '.call_each' do

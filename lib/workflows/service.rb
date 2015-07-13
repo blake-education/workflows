@@ -36,7 +36,7 @@ module Workflows
     # This is a dead giveaway that functions of this type signature will have side effects.
     #
     def compose_with_error_handling(*fns)
-      fns.flatten.compact.inject do |composed, fn|
+      fn = fns.flatten.compact.inject do |composed, fn|
         -> {
           last_return = composed.call
           if Workflows::Error.error?(last_return)
@@ -46,6 +46,7 @@ module Workflows
           end
         }
       end
+      fn || -> { success! }
     end
   end
 end
